@@ -73,7 +73,7 @@ class App extends Component {
    
     render() {
       return (
-              <main role="main" className="page">
+              <main role="main" className="col-lg-12 d-flex">
                 { this.state.loading
                   ? <div id="loader" className="text-center"><p className="text-center">Loading...</p></div>
                   : <Main
