@@ -1,3 +1,8 @@
+/*
+* Adapted from Dapp University's Tutorial "How to Build a Blockchain App"
+* https://www.dappuniversity.com/articles/how-to-build-a-blockchain-app
+*/
+
 import React, { Component } from 'react';
 import './App.css';
 
@@ -31,7 +36,11 @@ class Main extends Component {
               placeholder="Your Price?"
               required />
           </div>
-          <button type="submit" className="button-28">Add Product</button>
+          <button type="submit" className="button-28">Add Listing</button>
+          <button 
+            className="mint-button" onClick={(event) => {this.props.mintCoin()}}> 
+            Mint 
+          </button>
         </form>
         <p>&nbsp;</p>
         <h2>Listings</h2>

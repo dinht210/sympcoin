@@ -1,9 +1,14 @@
+/*
+* Adapted from Dapp University's Tutorial "How to Build a Blockchain App"
+* https://www.dappuniversity.com/articles/how-to-build-a-blockchain-app
+*/
+
 import React, { Component } from 'react';
 import Web3 from 'web3'
 import './App.css';
 import Main from './Main'
 import SympMarket from '../abis/SympMarket.json'
-
+import SympCoin from '../abis/SympCoin.json'
 
 class App extends Component {
     async componentWillMount() {
@@ -28,9 +33,12 @@ class App extends Component {
       const web3 = window.web3
       const accounts = await web3.eth.getAccounts()
       this.setState({ account: accounts[0] })
-      const address = '0xC38848B661c426A0af8D351E4dAB0ce50BF8AB60'
-      const sympmarket = new web3.eth.Contract(SympMarket.abi, address)
+      const marketAddress = '0xC38848B661c426A0af8D351E4dAB0ce50BF8AB60'
+      const coinAddress = '0x5b49302940fF935250b0f24CD2Fb84B407e55398'
+      const sympmarket = new web3.eth.Contract(SympMarket.abi, marketAddress)
+      const sympcoin = new web3.eth.Contract(SympCoin.abi, coinAddress)
       this.setState({ sympmarket })
+      this.setState({ sympcoin }) 
       const productCount = await sympmarket.methods.productCount().call()
       this.setState({ productCount })
       for (var i = 1; i <= productCount; i++) {
@@ -48,11 +56,14 @@ class App extends Component {
         account: '',
         productCount: 0,
         products: [],
-        loading: true
+        loading: true,
+        sympmarket: null,
+        sympcoin: null
       }
 
       this.createProduct = this.createProduct.bind(this)
       this.purchaseProduct = this.purchaseProduct.bind(this)
+      this.mintCoin = this.mintCoin.bind(this)
     }
 
     createProduct(name, price) {
@@ -70,6 +81,14 @@ class App extends Component {
         this.setState({ loading: false })
       })
     }
+
+    mintCoin() {
+      this.setState({ loading: true })
+      this.state.sympcoin.methods.mint(this.state.account, 1000000000000).send({ from: this.state.account })
+      .once('receipt', (receipt) => {
+        this.setState({ loading: false })
+      })
+    }
    
     render() {
       return (
@@ -79,7 +98,8 @@ class App extends Component {
                   : <Main
                     products={this.state.products}
                     createProduct={this.createProduct}
-                    purchaseProduct={this.purchaseProduct} />
+                    purchaseProduct={this.purchaseProduct} 
+                    mintCoin={this.mintCoin} />
                 }
               </main>
       );
