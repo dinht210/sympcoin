@@ -1,3 +1,10 @@
+App link: https://sympcoin-2.onrender.com 
+Note: This link may not always work due to limitations in Render's free tier
+
+You may run the docker container instead.
+
+However, it is best to run this project locally:
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
